@@ -7,6 +7,14 @@
     <title>vue-test</title>
   </head>
   <body>
+    <div id="img" class="form-group">
+        <label>背景图</label>
+        <input type="file" class="form-control" @change="onFileChange">
+      </div>
+    <div class="form-group" v-if="image">
+        <label>背景图预览</label>
+        ![](image)
+    </div>
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <div id="app2">
@@ -50,6 +58,30 @@
     </div>
 
     <script>
+      var app_img = new Vue({
+        el: '#img',
+        data: {
+          message: 'Hello qh!'
+        },
+        methods: {
+          onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+            return;
+            this.createImage(files[0]);
+            },
+          createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            reader.onload = (e) => {
+              vm.image = e.target.result;
+            };
+              reader.readAsDataURL(file);
+          },
+        }
+      })
       var app2 = new Vue({
         el: '#app2',
         data: {
